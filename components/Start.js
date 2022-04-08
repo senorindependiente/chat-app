@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Button,
   TouchableOpacity,
-} from "react-native-web";
+} from "react-native";
 
 export default class Start extends Component {
   //setting state for name and backgroundcolor
@@ -35,56 +35,58 @@ export default class Start extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <ImageBackground source={require("./image.png")} >
-          <Text style={styles.title}>Chat-App</Text>
-          <View style={styles.wrapper}>
-            <View style={styles.inputBox}>
-            <Image source={require("./icon.png")} style={styles.image} />
-              <TextInput
-                // value assign from the state text
-                value={this.state.name}
-                //onChangeText react native event handler, uses change of input from user
-                onChangeText={(name) => this.setState({ name })}
-                style={styles.input}
-                placeholder="Your Name"
-              />
-            </View>
-            <Text syle={styles.text}>Choose Background Color</Text>
-            <View style={styles.colorwrapper}>
-              <TouchableOpacity
-                style={styles.circle1}
-                onPress={() => this.changeBgColor(this.colors.dark)}
-              ></TouchableOpacity>
-              <TouchableOpacity
-                style={styles.circle2}
-                onPress={() => this.changeBgColor(this.colors.purple)}
-              ></TouchableOpacity>
-              <TouchableOpacity
-                style={styles.circle3}
-                onPress={() => this.changeBgColor(this.colors.blue)}
-              ></TouchableOpacity>
-              <TouchableOpacity
-                style={styles.circle4}
-                onPress={() => this.changeBgColor(this.colors.green)}
-              ></TouchableOpacity>
-            </View>
-            <Button
-              title="Start Chatting"
-              color="#757083"
-              style={styles.button}
-              //onPress react native event handler, user presses on something
-              // here the pressing of the button will navigate to the different (screen) component called "Chat"
-              onPress={() =>
-                this.props.navigation.navigate("Chat", {
-                  name: this.state.name,
-                  bgColor: this.state.bgColor,
-                })
-              }
+      <ImageBackground
+        source={require("./image.png")}
+        style={styles.container}
+        resize="cover"
+      >
+        <Text style={styles.title}>Chat-App</Text>
+        <View style={styles.wrapper}>
+          <View style={styles.inputBox}>
+            {/* <Image source={require("./icon.png")} style={styles.image} /> */}
+            <TextInput
+              // value assign from the state text
+              value={this.state.name}
+              //onChangeText react native event handler, uses change of input from user
+              onChangeText={(name) => this.setState({ name })}
+              style={styles.input}
+              placeholder="Your Name"
             />
           </View>
-        </ImageBackground>
-      </View>
+          <Text syle={styles.text}>Choose Background Color</Text>
+          <View style={styles.colorwrapper}>
+            <TouchableOpacity
+              style={styles.circle1}
+              onPress={() => this.changeBgColor(this.colors.dark)}
+            ></TouchableOpacity>
+            <TouchableOpacity
+              style={styles.circle2}
+              onPress={() => this.changeBgColor(this.colors.purple)}
+            ></TouchableOpacity>
+            <TouchableOpacity
+              style={styles.circle3}
+              onPress={() => this.changeBgColor(this.colors.blue)}
+            ></TouchableOpacity>
+            <TouchableOpacity
+              style={styles.circle4}
+              onPress={() => this.changeBgColor(this.colors.green)}
+            ></TouchableOpacity>
+          </View>
+          <Button
+            title="Start Chatting"
+            color="#757083"
+            style={styles.button}
+            //onPress react native event handler, user presses on something
+            // here the pressing of the button will navigate to the different (screen) component called "Chat"
+            onPress={() =>
+              this.props.navigation.navigate("Chat", {
+                name: this.state.name,
+                bgColor: this.state.bgColor,
+              })
+            }
+          />
+        </View>
+      </ImageBackground>
     );
   }
 }
@@ -95,23 +97,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-// image:{
-// height:2, 
-// },
-// inputBox:{
-//     flex: 1, flexDirection: "row",
-// },
+  // image:{
+  // height:2,
+  // },
+  // inputBox:{
+  //     flex: 1, flexDirection: "row",
+  // },
   wrapper: {
     backgroundColor: "white",
     width: "88%",
     height: "30%",
     padding: 20,
-    marginBottom: 60,
+    marginBottom: 120,
   },
   button: {
     marginTop: 30,
     fontSize: 16,
-    fontWeight: 600,
+    fontWeight: "600",
     color: "#FFFFFF",
   },
   input: {
@@ -120,9 +122,9 @@ const styles = StyleSheet.create({
     borderColor: "orange",
     borderWidth: 1,
     fontSize: 16,
-    fontWeight: 300,
+    fontWeight: "300",
     color: "#757083",
-    opacity: "50%",
+    opacity: 0.5,
     marginBottom: 30,
   },
   title: {
@@ -140,28 +142,28 @@ const styles = StyleSheet.create({
 
   circle1: {
     backgroundColor: "#090C08",
-    borderRadius: "50%",
+    borderRadius: 25,
     width: 30,
     height: 30,
     marginRight: 10,
   },
   circle2: {
     backgroundColor: "#474056",
-    borderRadius: "50%",
+    borderRadius: 25,
     width: 30,
     height: 30,
     marginRight: 10,
   },
   circle3: {
     backgroundColor: "#8A95A5",
-    borderRadius: "50%",
+    borderRadius: 25,
     width: 30,
     height: 30,
     marginRight: 10,
   },
   circle4: {
     backgroundColor: "#B9C6AE",
-    borderRadius: "50%",
+    borderRadius: 25,
     width: 30,
     height: 30,
     marginRight: 10,

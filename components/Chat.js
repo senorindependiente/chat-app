@@ -8,14 +8,17 @@ import {
   StyleSheet,
   Button,
 
-} from "react-native-web";
+} from "react-native";
 export default class Chat extends Component {
+
+
+
   render() {
-    let name = this.props.route.params.name; // OR ...
+    
+let name = this.props.route.params.name; // OR ...
     // let { name } = this.props.route.params;
 
     let bgColor = this.props.route.params.bgColor;
-
 
     this.props.navigation.setOptions({ title: name });
 
