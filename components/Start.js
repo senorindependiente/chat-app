@@ -42,7 +42,7 @@ export default class Start extends Component {
       >
         <Text style={styles.title}>Chat-App</Text>
         <View style={styles.wrapper}>
-          <View style={styles.inputBox}>
+          <View >
             {/* <Image source={require("./icon.png")} style={styles.image} /> */}
             <TextInput
               // value assign from the state text
@@ -100,17 +100,16 @@ const styles = StyleSheet.create({
   // image:{
   // height:2,
   // },
-  // inputBox:{
-  //     flex: 1, flexDirection: "row",
-  // },
+ 
   wrapper: {
     backgroundColor: "white",
     width: "88%",
-    height: "30%",
+    height: "44%",
     padding: 20,
-    marginBottom: 120,
+   marginBottom:300
   },
   button: {
+    height: 50,
     marginTop: 30,
     fontSize: 16,
     fontWeight: "600",
