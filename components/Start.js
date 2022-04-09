@@ -56,6 +56,7 @@ export default class Start extends Component {
           <Text syle={styles.text}>Choose Background Color</Text>
           <View style={styles.colorwrapper}>
             <TouchableOpacity
+            
               style={styles.circle1}
               onPress={() => this.changeBgColor(this.colors.dark)}
             ></TouchableOpacity>
