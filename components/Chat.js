@@ -7,15 +7,10 @@ import {
   View,
   StyleSheet,
   Button,
-
 } from "react-native";
 export default class Chat extends Component {
-
-
-
   render() {
-    
-let name = this.props.route.params.name; // OR ...
+    let name = this.props.route.params.name; // OR ...
     // let { name } = this.props.route.params;
 
     let bgColor = this.props.route.params.bgColor;
@@ -25,9 +20,13 @@ let name = this.props.route.params.name; // OR ...
     return (
       <View
         style={{
-          backgroundColor: bgColor
+          flex: 1, justifyContent: 'center', alignItems: 'center', 
+          backgroundColor: bgColor,
+
         }}
-      ></View>
+      >
+        <Text>hello</Text>
+      </View>
     );
   }
 }
