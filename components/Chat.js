@@ -33,7 +33,7 @@ export default class Chat extends Component {
         //static system message that the user has entered the chat + the username 
         {
           _id: 2,
-          text: "User " + name + " has entered the chat",
+          text: "User " + name + "has entered the chat",
           createdAt: new Date(),
           system: true,
         },
