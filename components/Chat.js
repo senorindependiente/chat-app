@@ -110,7 +110,9 @@ export default class Chat extends Component {
         createdAt: data.createdAt.toDate(),
         user: data.user,
       });
-      this.setState({messages})
+      this.setState({
+        messages: messages,
+      });
     });
   };
 
