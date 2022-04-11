@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+//adding firebase google database
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 //external library gifted-chat
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
 import { View, Platform, KeyboardAvoidingView } from "react-native";
@@ -8,15 +12,30 @@ export default class Chat extends Component {
     this.state = {
       messages: [],
     };
-  }
+    //configurations to allow this app to connect to Cloud Firestore database
+    const firebaseConfig = {
+      apiKey: "AIzaSyBGKlFEGjaYkQjYU8vXXvGCQ4bGwrhrNes",
+      authDomain: "chatapp-ed889.firebaseapp.com",
+      projectId: "chatapp-ed889",
+      storageBucket: "chatapp-ed889.appspot.com",
+      messagingSenderId: "337278130100",
+    };
 
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    //this creates a reference to my Firestore collection "messages"
+    //This stores and retrieves the chat messages the users send.
+    this.referenceChatMessages = firebase.firestore().collection("messages");
+  }
   componentDidMount() {
     //  takes the entered username from start.js assigned to a variable "name"
     let name = this.props.route.params.name;
 
     this.setState({
       //setting state for chat messages and for users
-      //normal inital static message to welcome the user 
+      //normal inital static message to welcome the user
       messages: [
         {
           _id: 1,
@@ -30,7 +49,7 @@ export default class Chat extends Component {
         },
 
         //adding a system message to see when the user was last active
-        //static system message that the user has entered the chat + the username 
+        //static system message that the user has entered the chat + the username
         {
           _id: 2,
           text: "User " + name + " has entered the chat",
@@ -39,7 +58,56 @@ export default class Chat extends Component {
         },
       ],
     });
+
+    //snapShot function "listens" for updates in them messages collection
+    //This takes a momentarely record of your database/collection to update it
+    this.referenceMessages = firebase.firestore().collection("messages");
+    //to stop the onSnapshot function create unsusbscribe function
+
+    if (!undefined || !null) {
+      this.unsubscribe = this.referenceMessages.onSnapshot(
+        this.onCollectionUpdate
+      );
+    } else {
+      alert("not found!");
+    }
+
+    //Firestore User Authentication
+    this.authUnsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        firebase.auth().signInAnonymously();
+      }
+      this.setState({
+        uid: user.uid,
+        messages: [],
+      });
+      this.unsubscribe = this.referencetMessages
+        .orderBy("createdAt", "desc")
+        .onSnapshot(this.onCollectionUpdate);
+    });
   }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  //whenever there are changes to the "messages" collection this function needs to be called
+  //the function retrieves the current data of "messages" collection and stores it in "state messages", allowing the data to be rendered in the view
+  onCollectionUpdate = (querySnapshot) => {
+    const messages = [];
+    // go through each document
+    querySnapshot.forEach((doc) => {
+      // get the QueryDocumentSnapshot's data
+      let data = doc.data();
+      messages.push({
+        _id: data._id,
+        text: data.text,
+        createdAt: data.createdAt.toDate(),
+        user: data.user,
+      });
+    });
+  };
+
   //this function adds new chat messages to the state
   onSend(messages = []) {
     this.setState((previousState) => ({
@@ -62,6 +130,17 @@ export default class Chat extends Component {
         }}
       />
     );
+  }
+
+  addMessages() {
+    // add a new message + user data  to the messages collection
+    this.referenceMessages.add({
+      _id: data._id,
+      text: data.text,
+      createdAt: data.createdAt.toDate(),
+      user: data.user,
+      uid: this.state.uid,
+    });
   }
 
   render() {
