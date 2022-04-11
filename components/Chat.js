@@ -11,6 +11,9 @@ export default class Chat extends Component {
     super();
     this.state = {
       messages: [],
+      createdAt:"",
+      text:"",
+      user:""
     };
     //configurations to allow this app to connect to Cloud Firestore database
     const firebaseConfig = {
@@ -27,7 +30,7 @@ export default class Chat extends Component {
 
     //this creates a reference to my Firestore collection "messages"
     //This stores and retrieves the chat messages the users send.
-    this.referenceChatMessages = firebase.firestore().collection("messages");
+    this.referenceMessages = firebase.firestore().collection("messages");
   }
   componentDidMount() {
     //  takes the entered username from start.js assigned to a variable "name"
@@ -60,8 +63,9 @@ export default class Chat extends Component {
     });
 
     //snapShot function "listens" for updates in them messages collection
-    //This takes a momentarely record of your database/collection to update it
     this.referenceMessages = firebase.firestore().collection("messages");
+
+    //This takes a momentarely record of your database/collection to update it
     //to stop the onSnapshot function create unsusbscribe function
 
     if (!undefined || !null) {
@@ -81,7 +85,7 @@ export default class Chat extends Component {
         uid: user.uid,
         messages: [],
       });
-      this.unsubscribe = this.referencetMessages
+      this.unsubscribe = this.referenceMessages
         .orderBy("createdAt", "desc")
         .onSnapshot(this.onCollectionUpdate);
     });
