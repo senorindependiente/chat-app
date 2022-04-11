@@ -10,7 +10,7 @@ export default class Chat extends Component {
   constructor() {
     super();
     this.state = {
-      uid:0,
+      
       messages: [],
       createdAt:"",
       text:"",
