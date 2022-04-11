@@ -10,6 +10,7 @@ export default class Chat extends Component {
   constructor() {
     super();
     this.state = {
+      uid:0,
       messages: [],
       createdAt:"",
       text:"",
@@ -109,6 +110,7 @@ export default class Chat extends Component {
         createdAt: data.createdAt.toDate(),
         user: data.user,
       });
+      this.setState({messages})
     });
   };
 
@@ -116,7 +118,12 @@ export default class Chat extends Component {
   onSend(messages = []) {
     this.setState((previousState) => ({
       messages: GiftedChat.append(previousState.messages, messages),
-    }));
+
+        })); 
+        () => {
+          this.addMessages();
+        }
+
   }
 
   // adds background colors for the chat text to the different chat users
