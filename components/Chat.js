@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
+//local storage solution for react native
+import AsyncStorage from "@react-native-async-storage/async-storage";
 //external library gifted-chat
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
 import { View, Platform, KeyboardAvoidingView } from "react-native";
@@ -10,11 +12,13 @@ export default class Chat extends Component {
   constructor() {
     super();
     this.state = {
-      
       messages: [],
-      createdAt:"",
-      text:"",
-      user:""
+      uid: 0,
+      user: {
+        _id: "",
+        name: "",
+        avatar: "",
+      },
     };
     //configurations to allow this app to connect to Cloud Firestore database
     const firebaseConfig = {
@@ -23,6 +27,7 @@ export default class Chat extends Component {
       projectId: "chatapp-ed889",
       storageBucket: "chatapp-ed889.appspot.com",
       messagingSenderId: "337278130100",
+      appId: "1:337278130100:web:296202d3e8af5ad94d84e1"
     };
 
     if (!firebase.apps.length) {
@@ -33,49 +38,17 @@ export default class Chat extends Component {
     //This stores and retrieves the chat messages the users send.
     this.referenceMessages = firebase.firestore().collection("messages");
   }
+
   componentDidMount() {
     //  takes the entered username from start.js assigned to a variable "name"
     let name = this.props.route.params.name;
 
-    this.setState({
-      //setting state for chat messages and for users
-      //normal inital static message to welcome the user
-      messages: [
-        {
-          _id: 1,
-          text: "Welcome " + name + "!",
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: "React Native",
-            avatar: "https://placeimg.com/140/140/any",
-          },
-        },
-
-        //adding a system message to see when the user was last active
-        //static system message that the user has entered the chat + the username
-        {
-          _id: 2,
-          text: "User " + name + " has entered the chat",
-          createdAt: new Date(),
-          system: true,
-        },
-      ],
-    });
-
-    //snapShot function "listens" for updates in them messages collection
-    this.referenceMessages = firebase.firestore().collection("messages");
-
     //This takes a momentarely record of your database/collection to update it
     //to stop the onSnapshot function create unsusbscribe function
 
-    if (!undefined || !null) {
-      this.unsubscribe = this.referenceMessages.onSnapshot(
-        this.onCollectionUpdate
-      );
-    } else {
-      alert("not found!");
-    }
+    this.unsubscribe = this.referenceMessages.onSnapshot(
+      this.onCollectionUpdate
+    );
 
     //Firestore User Authentication
     this.authUnsubscribe = firebase.auth().onAuthStateChanged((user) => {
@@ -85,19 +58,17 @@ export default class Chat extends Component {
       this.setState({
         uid: user.uid,
         messages: [],
+        user: {
+          _id: user.uid,
+          name: name,
+          avatar: "https://placeimg.com/140/140/any",
+        },
       });
       this.unsubscribe = this.referenceMessages
         .orderBy("createdAt", "desc")
         .onSnapshot(this.onCollectionUpdate);
     });
   }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  //whenever there are changes to the "messages" collection this function needs to be called
-  //the function retrieves the current data of "messages" collection and stores it in "state messages", allowing the data to be rendered in the view
   onCollectionUpdate = (querySnapshot) => {
     const messages = [];
     // go through each document
@@ -108,25 +79,47 @@ export default class Chat extends Component {
         _id: data._id,
         text: data.text,
         createdAt: data.createdAt.toDate(),
-        user: data.user,
-      });
-      this.setState({
-        messages: messages,
+        user: {
+          _id: data.user._id,
+          name: data.user.name,
+          avatar: data.user.avatar,
+        },
       });
     });
+    this.setState({
+      messages: messages,
+    });
   };
+
+  addMessages() {
+    // add a new message + user data  to the messages collection
+    const message = this.state.messages[0];
+    this.referenceMessages.add({
+      _id: message._id,
+      text: message.text,
+      createdAt: message.createdAt,
+      user: this.state.user,
+    });
+  }
 
   //this function adds new chat messages to the state
   onSend(messages = []) {
     this.setState((previousState) => ({
       messages: GiftedChat.append(previousState.messages, messages),
+    }), () => {
+      this.addMessages();
+    });
+  };
+    
+  
 
-        })); 
-        () => {
-          this.addMessages();
-        }
-
+  componentWillUnmount() {
+    this.authUnsubscribe();
+    this.unsubscribe();
   }
+
+  //whenever there are changes to the "messages" collection this function needs to be called
+  //the function retrieves the current data of "messages" collection and stores it in "state messages", allowing the data to be rendered in the view
 
   // adds background colors for the chat text to the different chat users
   renderBubble(props) {
@@ -145,17 +138,6 @@ export default class Chat extends Component {
     );
   }
 
-  addMessages() {
-    // add a new message + user data  to the messages collection
-    this.referenceMessages.add({
-      _id: data._id,
-      text: data.text,
-      createdAt: data.createdAt.toDate(),
-      user: data.user,
-      uid: this.state.uid,
-    });
-  }
-
   render() {
     // takes the input parameters of background color defined in the start.js component
 
@@ -172,7 +154,9 @@ export default class Chat extends Component {
           messages={this.state.messages}
           onSend={(messages) => this.onSend(messages)}
           user={{
-            _id: 1,
+            _id: this.state.user._id,
+            name: this.state.name,
+            avatar: this.state.user.avatar,
           }}
         />
         {/* this fixes android keyboard */}
