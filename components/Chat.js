@@ -41,7 +41,7 @@ export default class Chat extends Component {
     //This stores and retrieves the chat messages the users send.
     this.referenceMessages = firebase.firestore().collection("messages");
   }
-
+//retrieve messsages asynchronious trough asyncstorage 
   async getMessages() {
     let messages = "";
     try {
@@ -53,7 +53,7 @@ export default class Chat extends Component {
       console.log(error.message);
     }
   }
-
+//function to save message in asynstorage 
   async saveMessages() {
     try {
       await AsyncStorage.setItem('messages', JSON.stringify(this.state.messages));
@@ -61,7 +61,7 @@ export default class Chat extends Component {
       console.log(error.message);
     }
   }
-
+//function to delet message in asynstorage 
   async deleteMessages() {
     try {
       await AsyncStorage.removeItem('messages');
@@ -185,6 +185,7 @@ export default class Chat extends Component {
       }
     });
   }
+  //changes how the chat bar is rendered
 renderInputToolbar(props) {
     if (this.state.isConnected == false) {
     } else {
@@ -195,8 +196,6 @@ renderInputToolbar(props) {
       );
     }
   }
-  //whenever there are changes to the "messages" collection this function needs to be called
-  //the function retrieves the current data of "messages" collection and stores it in "state messages", allowing the data to be rendered in the view
 
   // adds background colors for the chat text to the different chat users
   renderBubble(props) {
