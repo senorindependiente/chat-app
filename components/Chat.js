@@ -45,6 +45,7 @@ export default class Chat extends Component {
     //this creates a reference to my Firestore collection "messages"
     //This stores and retrieves the chat messages the users send.
     this.referenceMessages = firebase.firestore().collection("messages");
+    this.refMsgsUser = null;
   }
   //retrieve messsages asynchronious trough asyncstorage
   async getMessages() {
@@ -214,6 +215,8 @@ export default class Chat extends Component {
       />
     );
   }
+
+  
 
   renderCustomView(props) {
     const { currentMessage } = props;
