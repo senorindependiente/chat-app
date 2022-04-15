@@ -30,7 +30,7 @@ location.
 1. Download this repo.
 2. In your CLI, navigate to the root directory of the project.
 3. Run `npm install` to install all the dependencies.
-4. Run 'npm start' or 'expo start' in terminal  to start local server
+4. Run `npm start` or `expo start` in terminal  to start local server
 5. Install Expo Go on a smartphone or use an emulator (Android Studio) to start the app
 
 ## Screenshots
