@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import Start from "./components/Start";
 import Chat from "./components/Chat";
 
+
 // import react native gesture handler
 import "react-native-gesture-handler";
-
 
 
 // import react Navigation
@@ -15,6 +15,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
 
 export default function App() {
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Start">

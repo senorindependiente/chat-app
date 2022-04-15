@@ -51,6 +51,9 @@ export default class Start extends Component {
               onChangeText={(name) => this.setState({ name })}
               style={styles.input}
               placeholder="Your Name"
+              accessible={true}
+              accessibilityLabel="your name"
+              accessibilityHint="Type the name you want to use in the chat session."
             />
           </View>
           <Text syle={styles.text}>Choose Background Color</Text>
@@ -59,18 +62,35 @@ export default class Start extends Component {
             
               style={styles.circle1}
               onPress={() => this.changeBgColor(this.colors.dark)}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="Very dark (mostly black) green violet background color"
+              accessibilityHint="Adds very dark (mostly black) green background color to the chat screen."
+              
+              
             ></TouchableOpacity>
             <TouchableOpacity
               style={styles.circle2}
               onPress={() => this.changeBgColor(this.colors.purple)}
+              accessibilityRole="button"
+              accessibilityLabel="Very dark grayish violet background color"
+              accessibilityHint="Adds very dark grayish violet  background color to the chat screen."
             ></TouchableOpacity>
             <TouchableOpacity
               style={styles.circle3}
               onPress={() => this.changeBgColor(this.colors.blue)}
+              accessibilityRole="button"
+              accessibilityLabel=" Dark grayish blue background color"
+              accessibilityHint="Adds  dark grayish blue background color to the chat screen."
+              accessible={true}
+             
             ></TouchableOpacity>
             <TouchableOpacity
               style={styles.circle4}
               onPress={() => this.changeBgColor(this.colors.green)}
+               accessibilityRole="button"
+              accessibilityLabel="Grayish green background color"
+              accessibilityHint="Adds grayish green background color to the chat screen."
             ></TouchableOpacity>
           </View>
           <Button
