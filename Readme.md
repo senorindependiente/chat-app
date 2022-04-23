@@ -36,4 +36,4 @@ location.
 ## Screenshots
 
 ![screenshot](./assets/screenshot1.PNG)
-![screenshot](./src/screenshot2.PNG)
+![screenshot](./assets/screenshot2.PNG)
