@@ -5,9 +5,8 @@ import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 
-import firebase from "firebase/compat/app";
-
-import "firebase/compat/firestore";
+import firebase from "firebase";
+import "firebase/firestore";
 export default class CustomActions extends React.Component {
   //pick image from phone
   pickImage = async () => {
@@ -31,7 +30,7 @@ export default class CustomActions extends React.Component {
   };
 
   takePhoto = async () => {
-    //permission to access camera and media library
+    //permission to access camera and media 
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     try {
       if (status === "granted") {

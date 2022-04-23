@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 //adding firebase google database
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import "firebase/compat/firestore";
+
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+// import firebase from "firebase/compat/app";
+// import "firebase/compat/auth";
+// import "firebase/compat/firestore";
+
 //import package to determine if user is online or not
 import NetInfo from "@react-native-community/netinfo";
 //local storage solution for react native
@@ -41,6 +45,7 @@ export default class Chat extends Component {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
+
 
     //this creates a reference to my Firestore collection "messages"
     //This stores and retrieves the chat messages the users send.
@@ -215,8 +220,6 @@ export default class Chat extends Component {
       />
     );
   }
-
-  
 
   renderCustomView(props) {
     const { currentMessage } = props;
